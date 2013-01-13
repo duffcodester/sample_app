@@ -13,6 +13,13 @@ describe "Authentication" do
       it { should have_selector('title', text: 'Sign in') }
       it { should have_selector('div.alert.alert-error', text: 'Invalid') }
 
+      it { should have_link('Sign in', href: signin_path) }
+
+      it { should_not have_link('Users', href: users_path) }
+      it { should_not have_link('Profile') }
+      it { should_not have_link('Settings') }
+      it { should_not have_link('Sign out', href: signout_path) }
+
       describe "after visiting another page" do
         before { click_link "Home" }
         it { should_not have_selector('div.alert.alert-error') }
@@ -31,6 +38,10 @@ describe "Authentication" do
       it { should have_link('Sign out', href: signout_path) }
       
       it { should_not have_link('Sign in', href: signin_path) }
+
+      describe "trying to access 'new' and 'create' actions while signed in" do
+        #redirect to root URL
+      end
 
       describe "followed by signout" do
         before { click_link "Sign out" }

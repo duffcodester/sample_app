@@ -31,6 +31,14 @@ describe User do
 	it { should be_valid }
   it { should_not be_admin }
 
+  describe "accessible attributes" do
+    it "should not allow access to admin" do
+      expect do
+        User.new(admin: true)
+      end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+    end
+  end
+
   describe "with admin attribute set to 'true'" do
     before do
       @user.save!
@@ -50,10 +58,10 @@ describe User do
     	it { should_not be_valid }
   	end
 
-  	describe "when name is too long" do
-    	before { @user.name = "a" * 51 }
-    	it { should_not be_valid }
-  	end
+  describe "when name is too long" do
+  	before { @user.name = "a" * 51 }
+     	it { should_not be_valid }
+  end
 
   	describe "when email format is invalid" do
     	it "should be invalid" do
@@ -99,7 +107,7 @@ describe User do
   	describe "when password is not present" do
   		before { @user.password = @user.password_confirmation = " " }
   		it { should_not be_valid }
-	end
+    end
 
 	describe "when password doesn't match confirmation" do
  		before { @user.password_confirmation = "mismatch" }
